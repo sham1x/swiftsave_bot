@@ -47,8 +47,10 @@ async def main():
         print("❌ XATO: .env faylida BOT_TOKEN ko'rsatilmagan! Iltimos, Tokeningizni joylang.")
         return
 
+    # Initialize SQLite database
     init_db()
 
+    # Start dummy HTTP listener for Render port check
     try:
         await start_dummy_server()
     except Exception as e:
@@ -57,11 +59,14 @@ async def main():
     bot = Bot(token=BOT_TOKEN)
     dp = Dispatcher()
 
+    # Clear any previous webhook to enable polling mode
     await bot.delete_webhook(drop_pending_updates=True)
 
+    # Register Throttling Middleware
     dp.message.middleware(ThrottlingMiddleware(rate_limit=2.0))
     dp.callback_query.middleware(ThrottlingMiddleware(rate_limit=1.5))
 
+    # Register Handlers
     dp.include_router(start.router)
     dp.include_router(vip.router)
     dp.include_router(admin.router)
