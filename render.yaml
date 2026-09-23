@@ -1,0 +1,16 @@
+services:
+  - type: worker
+    name: telegram-media-downloader-bot
+    env: docker
+    plan: free
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: ADMIN_IDS
+        value: "1813197866"
+      - key: DB_NAME
+        value: "bot.db"
+      - key: DEFAULT_COOLDOWN
+        value: "90"
+      - key: DEFAULT_VIP_PRICE
+        value: "20000"
